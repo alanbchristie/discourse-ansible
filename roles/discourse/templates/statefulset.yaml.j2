@@ -74,6 +74,12 @@ spec:
           value: '{{ d_redis_port_number }}'
         - name: REDIS_PASSWORD
           value: '{{ d_redis_password }}'
+        - name: DISCOURSE_SKIP_INSTALL
+{% if d_skip_install %}
+          value: 'yes'
+{% else %}
+          value: 'no'
+{% endif %}
         # Debug
         - name: NAMI_LOG_LEVEL
           value: '{{ d_image_log_level }}'
