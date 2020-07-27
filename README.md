@@ -41,15 +41,6 @@ You could create a default Discourse database in PostgreSQL...
     CREATE DATABASE bitnami_application;
     GRANT ALL PRIVILEGES ON DATABASE bitnami_application TO bn_discourse;
 
-## Ansible Vault
-The project uses files encrypted by Ansible Vault. AWX will inject
-the vault secret but if you want to edit or inspect the secret file
-(`roles/website/vars/pull-secrets.vault`) you will need
-the vault key, which can be found in our **KeePass** application under
-`website-ansible -> Ansible Vault Password`: -
-
-    $ ansible-vault edit roles/website/vars/pull-secrets.vault
-
 ---
 
 [awx]: https://github.com/ansible/awx
