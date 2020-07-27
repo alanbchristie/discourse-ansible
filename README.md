@@ -1,6 +1,7 @@
 # Discourse Orchestration (Ansible)
 
 [![Build Status](https://travis-ci.com/InformaticsMatters/discourse-ansible.svg?branch=master)](https://travis-ci.com/InformaticsMatters/discourse-ansible)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/informaticsmatters/discourse-ansible)
 
 A playbook and Role to deploy [Discourse], suitable for execution by
 [AWX].
@@ -20,6 +21,23 @@ We depend on our [infrastructure] project's Kubernetes
 As with all of our playbooks you can find the common user-defined variables
 in the role's `defaults/main.yaml` and less common variables in
 `vars/main.yaml`.
+
+## Prerequisites
+You will need: -
+
+1.  A **PostgreSQL** database (better than v10) with a user
+    and database that can be used by Discourse.
+2.  A **Redis** database
+
+>   You'll set the database details using variables you'll find in
+    the `defaults` directory.
+
+You could create a default Discourse database in PostgreSQL...
+
+    CREATE USER bn_discourse;
+    ALTER USER bn_discourse WITH PASSWORD 'bitnami1';
+    CREATE DATABASE bitnami_application;
+    GRANT ALL PRIVILEGES ON DATABASE bitnami_application TO bn_discourse;
 
 ## Ansible Vault
 The project uses files encrypted by Ansible Vault. AWX will inject

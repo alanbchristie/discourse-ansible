@@ -4,8 +4,8 @@
 d_state: present
 
 # Discourse variables
-d_hostname: discourse.informaticsmatters.org
-d_sitename: Informatics Matters
+d_hostname: discourse.example.com
+d_sitename: Discourse
 d_password: SetMe
 
 # PostgreSQL details
