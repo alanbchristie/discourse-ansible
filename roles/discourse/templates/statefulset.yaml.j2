@@ -83,20 +83,6 @@ spec:
         # Debug
         - name: NAMI_LOG_LEVEL
           value: '{{ d_image_log_level }}'
-        readinessProbe:
-          httpGet:
-            port: 3000
-          initialDelaySeconds: 30
-          periodSeconds: 15
-          failureThreshold: 6
-          timeoutSeconds: 5
-        livenessProbe:
-          httpGet:
-            port: 3000
-          initialDelaySeconds: 30
-          periodSeconds: 15
-          failureThreshold: 6
-          timeoutSeconds: 5
         resources:
           limits:
             cpu: 1000m
