@@ -74,6 +74,7 @@ spec:
           value: '{{ d_redis_port_number }}'
         - name: REDIS_PASSWORD
           value: '{{ d_redis_password }}'
+        # Debug
         - name: NAMI_LOG_LEVEL
           value: '{{ d_image_log_level }}'
         readinessProbe:
@@ -137,6 +138,7 @@ spec:
           value: '{{ d_redis_port_number }}'
         - name: REDIS_PASSWORD
           value: '{{ d_redis_password }}'
+{% if d_smtp_host not in ['SetMe'] %}
         # SMTP details
         - name: SMTP_HOST
           value: '{{ d_smtp_host }}'
@@ -146,6 +148,8 @@ spec:
           value: '{{ d_smtp_user }}'
         - name: SMTP_PASSWORD
           value: '{{ d_smtp_password }}'
+{% endif %}
+        # Debug
         - name: NAMI_LOG_LEVEL
           value: '{{ d_image_log_level }}'
         resources:
