@@ -16,6 +16,8 @@ d_discourse_pg_password: bitnami1
 d_discourse_pg_name: bitnami_application
 
 # Redis details
+d_redis_host: redis-headless.redis.svc
+d_redis_port_number: 6379
 d_redis_password: SetMe
 
 # SMTP details
