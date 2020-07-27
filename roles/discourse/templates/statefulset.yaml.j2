@@ -33,7 +33,6 @@ spec:
 
       containers:
 
-{% if 0 %}
       # Discourse Container
       #
       - name: discourse
@@ -75,15 +74,6 @@ spec:
           value: '{{ d_redis_port_number }}'
         - name: REDIS_PASSWORD
           value: '{{ d_redis_password }}'
-        # SMTP details
-        - name: SMTP_HOST
-          value: '{{ d_smtp_host }}'
-        - name: SMTP_PORT
-          value: '{{ d_smtp_port }}'
-        - name: SMTP_USER
-          value: '{{ d_smtp_user }}'
-        - name: SMTP_PASSWORD
-          value: '{{ d_smtp_password }}'
         - name: NAMI_LOG_LEVEL
           value: '{{ d_image_log_level }}'
 #        readinessProbe:
@@ -104,9 +94,8 @@ spec:
 #            cpu: 100m
 #            memory: 250Mi
         volumeMounts:
-        - mountPath: /bitnami
+        - mountPath: /bitnami/postgresql
           name: discourse
-{% endif %}
 
       # Discourse Sidekiq Container
       #
@@ -114,7 +103,7 @@ spec:
         image: {{ d_image_name }}:{{ d_image_tag }}
         imagePullPolicy: IfNotPresent
         terminationMessagePolicy: FallbackToLogsOnError
-        command:
+        args:
         - nami
         - start
         - --foreground
@@ -164,7 +153,7 @@ spec:
 #            cpu: 100m
 #            memory: 250Mi
         volumeMounts:
-        - mountPath: /bitnami
+        - mountPath: /bitnami/postgresql
           name: discourse
 
       volumes:
