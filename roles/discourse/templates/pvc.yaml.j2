@@ -1,0 +1,13 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: discourse
+  namespace: {{ d_namespace }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: '{{ d_vol_storageclass }}'
+  resources:
+    requests:
+      storage: '{{ d_vol_size_g }}Gi'

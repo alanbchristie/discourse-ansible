@@ -1,0 +1,13 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: discourse
+  namespace: {{ d_namespace }}
+spec:
+  selector:
+    name: discourse
+  ports:
+  - name: http
+    port: 80
+    targetPort: http

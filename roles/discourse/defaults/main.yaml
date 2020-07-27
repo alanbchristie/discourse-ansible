@@ -1,0 +1,25 @@
+---
+
+# Set to 'absent' to undeploy
+d_state: present
+
+# Discourse variables
+d_hostname: discourse.informaticsmatters.org
+d_sitename: Informatics Matters
+d_password: SetMe
+
+# PostgreSQL details
+d_pg_host: database.im-infra.svc
+d_pg_port_number: 5432
+d_discourse_pg_username: bn_discourse
+d_discourse_pg_password: bitnami1
+d_discourse_pg_name: bitnami_application
+
+# Redis details
+d_redis_password: SetMe
+
+# SMTP details
+d_smtp_host: SetMe
+d_smtp_port: 587
+d_smtp_user: SetMe
+d_smtp_password: SetMe

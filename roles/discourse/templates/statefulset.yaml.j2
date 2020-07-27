@@ -1,0 +1,153 @@
+---
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: discourse
+  namespace: {{ d_namespace }}
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      name: discourse
+  serviceName: discourse
+  template:
+    metadata:
+      name: discourse
+      labels:
+        name: discourse
+    spec:
+      serviceAccountName: discourse
+
+      # A 'preferred' (not guaranteed)
+      # node selection affinity...
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: purpose
+                operator: In
+                values:
+                - {{ d_node_purpose }}
+
+      containers:
+
+      # Discourse Container
+      #
+      - name: discourse
+        image: {{ d_image_name }}:{{ d_image_tag }}
+        imagePullPolicy: IfNotPresent
+        terminationMessagePolicy: FallbackToLogsOnError
+        ports:
+        - containerPort: 3000
+          name: http
+        env:
+        # Discourse details
+        - name: DISCOURSE_PASSWORD
+          value: {{ d_password }}
+        - name: DISCOURSE_SITENAME
+          value: {{ d_sitename }}
+        - name: DISCOURSE_HOSTNAME
+          value: {{ d_hostname }}
+        # PostgreSQL details
+        - name: POSTGRESQL_HOST
+          value: {{ d_pg_host }}
+        - name: POSTGRESQL_PORT_NUMBER
+          value: {{ d_pg_port_number }}
+        - name: DISCOURSE_POSTGRESQL_USERNAME
+          value: {{ d_discourse_pg_username }}
+        - name: DISCOURSE_POSTGRESQL_PASSWORD
+          value: {{ d_discourse_pg_password }}
+        - name: DISCOURSE_POSTGRESQL_NAME
+          value: {{ d_discourse_pg_name }}
+        # Redis details
+        - name: REDIS_PASSWORD
+          value: {{ d_redis_password }}
+        # SMTP details
+        - name: SMTP_HOST
+          value: {{ d_smtp_host }}
+        - name: SMTP_PORT
+          value: {{ d_smtp_port }}
+        - name: SMTP_USER
+          value: {{ d_smtp_user }}
+        - name: SMTP_PASSWORD
+          value: {{ d_smtp_password }}
+        readinessProbe:
+          httpGet:
+            port: 3000
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            port: 3000
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 500m
+            memory: 250Mi
+          requests:
+            cpu: 100m
+            memory: 250Mi
+        volumeMounts:
+        - mountPath: /bitnami
+          name: discourse
+
+      # Discourse Sidekiq Container
+      #
+      - name: discourse-sidekiq
+        image: {{ d_image_name }}:{{ d_image_tag }}
+        imagePullPolicy: IfNotPresent
+        terminationMessagePolicy: FallbackToLogsOnError
+        command:
+        - nami
+        - start
+        - --foreground
+        - discourse-sidekiq
+        env:
+        # Discourse details
+        - name: DISCOURSE_HOST
+          value: localhost
+        - name: DISCOURSE_PORT
+          value: 3000
+        - name: DISCOURSE_HOSTNAME
+          value: {{ d_hostname }}
+        # PostgreSQL details
+        - name: POSTGRESQL_HOST
+          value: {{ d_pg_host }}
+        - name: POSTGRESQL_PORT_NUMBER
+          value: {{ d_pg_port_number }}
+        - name: DISCOURSE_POSTGRESQL_USERNAME
+          value: {{ d_discourse_pg_username }}
+        - name: DISCOURSE_POSTGRESQL_PASSWORD
+          value: {{ d_discourse_pg_password }}
+        - name: DISCOURSE_POSTGRESQL_NAME
+          value: {{ d_discourse_pg_name }}
+        # Redis details
+        - name: REDIS_PASSWORD
+          value: {{ d_redis_password }}
+        # SMTP details
+        - name: SMTP_HOST
+          value: {{ d_smtp_host }}
+        - name: SMTP_PORT
+          value: {{ d_smtp_port }}
+        - name: SMTP_USER
+          value: {{ d_smtp_user }}
+        - name: SMTP_PASSWORD
+          value: {{ d_smtp_password }}
+        resources:
+          limits:
+            cpu: 500m
+            memory: 250Mi
+          requests:
+            cpu: 100m
+            memory: 250Mi
+        volumeMounts:
+        - mountPath: /bitnami
+          name: discourse
+
+      volumes:
+      - name: discourse
+        persistentVolumeClaim:
+          claimName: discourse

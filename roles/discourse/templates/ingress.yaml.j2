@@ -1,0 +1,24 @@
+---
+
+kind: Ingress
+apiVersion: networking.k8s.io/v1beta1
+metadata:
+  name: discourse
+  namespace: {{ d_namespace }}
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-nginx-{{ d_cert_issuer|lower }}"
+spec:
+  tls:
+  - hosts:
+    - {{ d_hostname }}
+    secretName: discourse-tls
+  rules:
+  - host: {{ d_hostname }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: discourse
+          servicePort: http
