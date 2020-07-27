@@ -16,6 +16,8 @@ d_cert_issuer: production
 
 # General variables
 
+wait_timeout: 120
+
 wait_for_bind: no
 bind_timeout: 240
 pod_ready_timeout: 600
