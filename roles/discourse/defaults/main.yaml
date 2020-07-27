@@ -6,6 +6,7 @@ d_state: present
 # Discourse variables
 d_hostname: discourse.example.com
 d_sitename: Discourse
+d_username: user
 d_password: SetMe
 
 # PostgreSQL details

@@ -44,6 +44,8 @@ spec:
           name: http
         env:
         # Discourse details
+        - name: DISCOURSE_USERNAME
+          value: '{{ d_username }}'
         - name: DISCOURSE_PASSWORD
           value: '{{ d_password }}'
         - name: DISCOURSE_SITENAME
@@ -102,6 +104,7 @@ spec:
         - mountPath: /bitnami
           name: discourse
 
+{% if false %}
       # Discourse Sidekiq Container
       #
       - name: discourse-sidekiq
@@ -158,6 +161,7 @@ spec:
         volumeMounts:
         - mountPath: /bitnami
           name: discourse
+{% endif %}
 
       volumes:
       - name: discourse
