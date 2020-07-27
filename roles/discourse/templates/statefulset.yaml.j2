@@ -33,6 +33,7 @@ spec:
 
       containers:
 
+{% if 0 %}
       # Discourse Container
       #
       - name: discourse
@@ -83,28 +84,30 @@ spec:
           value: '{{ d_smtp_user }}'
         - name: SMTP_PASSWORD
           value: '{{ d_smtp_password }}'
-        readinessProbe:
-          httpGet:
-            port: 3000
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
-        livenessProbe:
-          httpGet:
-            port: 3000
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
-        resources:
-          limits:
-            cpu: 500m
-            memory: 250Mi
-          requests:
-            cpu: 100m
-            memory: 250Mi
+        - name: NAMI_LOG_LEVEL
+          value: '{{ d_image_log_level }}'
+#        readinessProbe:
+#          httpGet:
+#            port: 3000
+#          initialDelaySeconds: 10
+#          timeoutSeconds: 5
+#        livenessProbe:
+#          httpGet:
+#            port: 3000
+#          initialDelaySeconds: 10
+#          timeoutSeconds: 5
+#        resources:
+#          limits:
+#            cpu: 500m
+#            memory: 250Mi
+#          requests:
+#            cpu: 100m
+#            memory: 250Mi
         volumeMounts:
         - mountPath: /bitnami
           name: discourse
+{% endif %}
 
-{% if false %}
       # Discourse Sidekiq Container
       #
       - name: discourse-sidekiq
@@ -151,17 +154,16 @@ spec:
           value: '{{ d_smtp_user }}'
         - name: SMTP_PASSWORD
           value: '{{ d_smtp_password }}'
-        resources:
-          limits:
-            cpu: 500m
-            memory: 250Mi
-          requests:
-            cpu: 100m
-            memory: 250Mi
+#        resources:
+#          limits:
+#            cpu: 500m
+#            memory: 250Mi
+#          requests:
+#            cpu: 100m
+#            memory: 250Mi
         volumeMounts:
         - mountPath: /bitnami
           name: discourse
-{% endif %}
 
       volumes:
       - name: discourse

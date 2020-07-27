@@ -6,6 +6,10 @@ d_sa_psp: im-core-unrestricted
 d_image_name: bitnami/discourse
 d_image_tag: 2.5.0
 
+# Bitnami container log level.
+# i.e. 'info', 'debug', 'trace'
+d_image_log_level: debug
+
 d_vol_storageclass: ' '
 d_vol_size_g: 8
 
