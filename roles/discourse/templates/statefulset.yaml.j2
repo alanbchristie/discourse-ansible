@@ -45,38 +45,38 @@ spec:
         env:
         # Discourse details
         - name: DISCOURSE_PASSWORD
-          value: {{ d_password }}
+          value: '{{ d_password }}'
         - name: DISCOURSE_SITENAME
-          value: {{ d_sitename }}
+          value: '{{ d_sitename }}'
         - name: DISCOURSE_HOSTNAME
-          value: {{ d_hostname }}
+          value: '{{ d_hostname }}'
         # PostgreSQL details
         - name: POSTGRESQL_HOST
-          value: {{ d_pg_host }}
+          value: '{{ d_pg_host }}'
         - name: POSTGRESQL_PORT_NUMBER
-          value: {{ d_pg_port_number }}
+          value: '{{ d_pg_port_number }}'
         - name: DISCOURSE_POSTGRESQL_USERNAME
-          value: {{ d_discourse_pg_username }}
+          value: '{{ d_discourse_pg_username }}'
         - name: DISCOURSE_POSTGRESQL_PASSWORD
-          value: {{ d_discourse_pg_password }}
+          value: '{{ d_discourse_pg_password }}'
         - name: DISCOURSE_POSTGRESQL_NAME
-          value: {{ d_discourse_pg_name }}
+          value: '{{ d_discourse_pg_name }}'
         # Redis details
         - name: REDIS_HOST
-          value: {{ d_redis_host }}
+          value: '{{ d_redis_host }}'
         - name: REDIS_PORT_NUMBER
-          value: {{ d_redis_port_number }}
+          value: '{{ d_redis_port_number }}'
         - name: REDIS_PASSWORD
-          value: {{ d_redis_password }}
+          value: '{{ d_redis_password }}'
         # SMTP details
         - name: SMTP_HOST
-          value: {{ d_smtp_host }}
+          value: '{{ d_smtp_host }}'
         - name: SMTP_PORT
-          value: {{ d_smtp_port }}
+          value: '{{ d_smtp_port }}'
         - name: SMTP_USER
-          value: {{ d_smtp_user }}
+          value: '{{ d_smtp_user }}'
         - name: SMTP_PASSWORD
-          value: {{ d_smtp_password }}
+          value: '{{ d_smtp_password }}'
         readinessProbe:
           httpGet:
             port: 3000
@@ -112,38 +112,38 @@ spec:
         env:
         # Discourse details
         - name: DISCOURSE_HOST
-          value: localhost
+          value: 'localhost'
         - name: DISCOURSE_PORT
-          value: 3000
+          value: '3000'
         - name: DISCOURSE_HOSTNAME
-          value: {{ d_hostname }}
+          value: '{{ d_hostname }}'
         # PostgreSQL details
         - name: POSTGRESQL_HOST
-          value: {{ d_pg_host }}
+          value: '{{ d_pg_host }}'
         - name: POSTGRESQL_PORT_NUMBER
-          value: {{ d_pg_port_number }}
+          value: '{{ d_pg_port_number }}'
         - name: DISCOURSE_POSTGRESQL_USERNAME
-          value: {{ d_discourse_pg_username }}
+          value: '{{ d_discourse_pg_username }}'
         - name: DISCOURSE_POSTGRESQL_PASSWORD
-          value: {{ d_discourse_pg_password }}
+          value: '{{ d_discourse_pg_password }}'
         - name: DISCOURSE_POSTGRESQL_NAME
-          value: {{ d_discourse_pg_name }}
+          value: '{{ d_discourse_pg_name }}'
         # Redis details
         - name: REDIS_HOST
-          value: {{ d_redis_host }}
+          value: '{{ d_redis_host }}'
         - name: REDIS_PORT_NUMBER
-          value: {{ d_redis_port_number }}
+          value: '{{ d_redis_port_number }}'
         - name: REDIS_PASSWORD
-          value: {{ d_redis_password }}
+          value: '{{ d_redis_password }}'
         # SMTP details
         - name: SMTP_HOST
-          value: {{ d_smtp_host }}
+          value: '{{ d_smtp_host }}'
         - name: SMTP_PORT
-          value: {{ d_smtp_port }}
+          value: '{{ d_smtp_port }}'
         - name: SMTP_USER
-          value: {{ d_smtp_user }}
+          value: '{{ d_smtp_user }}'
         - name: SMTP_PASSWORD
-          value: {{ d_smtp_password }}
+          value: '{{ d_smtp_password }}'
         resources:
           limits:
             cpu: 500m
