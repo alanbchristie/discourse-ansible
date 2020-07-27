@@ -9,7 +9,9 @@ d_sitename: Discourse
 d_password: SetMe
 
 # PostgreSQL details
-d_pg_host: database.im-infra.svc
+d_pg_host: postgres.postgres.svc
+d_pg_root_user: postgres
+d_pg_root_password: SetMe
 d_pg_port_number: 5432
 d_discourse_pg_username: bn_discourse
 d_discourse_pg_password: bitnami1

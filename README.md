@@ -34,7 +34,7 @@ You will need: -
 
 You could create a default Discourse database in PostgreSQL...
 
-    psql --username postgres --dbname postgres
+    # psql --username postgres --dbname postgres
     
     CREATE USER bn_discourse;
     ALTER USER bn_discourse WITH PASSWORD 'bitnami1';

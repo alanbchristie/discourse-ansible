@@ -53,6 +53,10 @@ spec:
         # PostgreSQL details
         - name: POSTGRESQL_HOST
           value: '{{ d_pg_host }}'
+        - name: POSTGRESQL_ROOT_USER
+          value: '{{ d_pg_root_user }}'
+        - name: POSTGRESQL_ROOT_PASSWORD
+          value: '{{ d_pg_root_password }}'
         - name: POSTGRESQL_PORT_NUMBER
           value: '{{ d_pg_port_number }}'
         - name: DISCOURSE_POSTGRESQL_USERNAME
