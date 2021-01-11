@@ -8,4 +8,5 @@ rules:
   indentation: {spaces: 2, indent-sequences: false}
 
 ignore: |
+  .github/
   roles/discourse/templates/statefulset.yaml.j2

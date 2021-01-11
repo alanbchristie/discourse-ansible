@@ -1,6 +1,7 @@
 # Discourse Orchestration (Ansible)
 
-[![Build Status](https://travis-ci.com/InformaticsMatters/discourse-ansible.svg?branch=master)](https://travis-ci.com/InformaticsMatters/discourse-ansible)
+![lint](https://github.com/InformaticsMatters/discourse-ansible/workflows/lint/badge.svg)
+
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/informaticsmatters/discourse-ansible)
 
 A playbook and Role to deploy [Discourse], suitable for execution by
