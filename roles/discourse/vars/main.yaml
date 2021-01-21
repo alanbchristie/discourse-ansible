@@ -3,8 +3,22 @@
 d_namespace: discourse
 d_sa_psp: im-core-unrestricted
 
-d_image_name: bitnami/discourse
-d_image_tag: 2.5.0
+d_image_name: docker.io/bitnami/discourse
+d_image_tag: 2.6.0
+d_vol_storageclass: ' '
+d_vol_size_g: 8
+d_sidekiq_vol_storageclass: ' '
+d_sidekiq_vol_size_g: 8
+
+d_redis_image_name: docker.io/bitnami/redis
+d_redis_image_tag: 6.0-debian-10
+d_redis_vol_storageclass: ' '
+d_redis_vol_size_g: 8
+
+d_postgres_image_name: docker.io/bitnami/postgresql
+d_postgres_image_tag: 11-debian-10
+d_postgres_vol_storageclass: ' '
+d_postgres_vol_size_g: 8
 
 # Bitnami container log level.
 # i.e. 'info', 'debug', 'trace'
@@ -12,9 +26,6 @@ d_image_log_level: debug
 # Skip installation
 # (controls whether the container's DISCOURSE_SKIP_INSTALL is 'yes' or 'no')
 d_skip_install: no
-
-d_vol_storageclass: ' '
-d_vol_size_g: 8
 
 d_node_purpose: application
 d_pod_ready_timeout: 600
@@ -24,7 +35,4 @@ d_cert_issuer: production
 # General variables
 
 wait_timeout: 120
-
-wait_for_bind: no
-bind_timeout: 240
 pod_ready_timeout: 600

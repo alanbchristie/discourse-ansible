@@ -1,0 +1,13 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres
+  namespace: {{ d_namespace }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: '{{ d_potgres_vol_storageclass }}'
+  resources:
+    requests:
+      storage: '{{ d_potgres_vol_size_g }}Gi'

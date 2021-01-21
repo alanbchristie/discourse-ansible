@@ -1,0 +1,13 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: redis
+  namespace: {{ d_namespace }}
+spec:
+  selector:
+    name: redis
+  ports:
+  - name: redis
+    port: 6379
+    targetPort: redis

@@ -48,19 +48,31 @@ spec:
           value: '{{ d_username }}'
         - name: DISCOURSE_PASSWORD
           value: '{{ d_password }}'
+        - name: DISCOURSE_EMAIL
+          value: '{{ d_email }}'
         - name: DISCOURSE_SITENAME
           value: '{{ d_sitename }}'
         - name: DISCOURSE_HOSTNAME
           value: '{{ d_hostname }}'
+        - name: DISCOURSE_SKIP_INSTALL
+{% if d_skip_install %}
+          value: 'yes'
+{% else %}
+          value: 'no'
+{% endif %}
+        - name: DISCOURSE_PASSENGER_SPAWN_METHOD
+          value: 'direct'
+        - name: DISCOURSE_PORT_NUMBER
+          value: '3000'
         # PostgreSQL details
-        - name: POSTGRESQL_HOST
-          value: '{{ d_pg_host }}'
         - name: POSTGRESQL_ROOT_USER
-          value: '{{ d_pg_root_user }}'
+          value: 'postgres'
         - name: POSTGRESQL_ROOT_PASSWORD
           value: '{{ d_pg_root_password }}'
+        - name: POSTGRESQL_HOST
+          value: 'postgres'
         - name: POSTGRESQL_PORT_NUMBER
-          value: '{{ d_pg_port_number }}'
+          value: '5432'
         - name: DISCOURSE_POSTGRESQL_USERNAME
           value: '{{ d_discourse_pg_username }}'
         - name: DISCOURSE_POSTGRESQL_PASSWORD
@@ -69,16 +81,25 @@ spec:
           value: '{{ d_discourse_pg_name }}'
         # Redis details
         - name: REDIS_HOST
-          value: '{{ d_redis_host }}'
+          value: 'redis'
         - name: REDIS_PORT_NUMBER
-          value: '{{ d_redis_port_number }}'
+          value: '6379'
         - name: REDIS_PASSWORD
           value: '{{ d_redis_password }}'
-        - name: DISCOURSE_SKIP_INSTALL
-{% if d_skip_install %}
+{% if d_smtp_host not in ['SetMe'] %}
+        # SMTP details
+        - name: SMTP_HOST
+          value: '{{ d_smtp_host }}'
+        - name: SMTP_PORT
+          value: '{{ d_smtp_port }}'
+        - name: SMTP_USER
+          value: '{{ d_smtp_user }}'
+        - name: SMTP_PASSWORD
+          value: '{{ d_smtp_password }}'
+        - name: SMTP_TLS
           value: 'yes'
-{% else %}
-          value: 'no'
+        - name: SMTP_AUTH
+          value: 'login'
 {% endif %}
         # Debug
         - name: NAMI_LOG_LEVEL
@@ -90,7 +111,7 @@ spec:
             cpu: 250m
             memory: 500Mi
         volumeMounts:
-        - mountPath: /bitnami/postgresql
+        - mountPath: /bitnami
           name: discourse
 
       # Discourse Sidekiq Container
@@ -114,9 +135,15 @@ spec:
           value: '{{ d_hostname }}'
         # PostgreSQL details
         - name: POSTGRESQL_HOST
-          value: '{{ d_pg_host }}'
+          value: 'postgres'
         - name: POSTGRESQL_PORT_NUMBER
-          value: '{{ d_pg_port_number }}'
+          value: '5432'
+        - name: DISCOURSE_POSTGRESQL_USERNAME
+          value: '{{ d_discourse_pg_username }}'
+        - name: DISCOURSE_POSTGRESQL_PASSWORD
+          value: '{{ d_discourse_pg_password }}'
+        - name: DISCOURSE_POSTGRESQL_NAME
+          value: '{{ d_discourse_pg_name }}'
         - name: DISCOURSE_POSTGRESQL_USERNAME
           value: '{{ d_discourse_pg_username }}'
         - name: DISCOURSE_POSTGRESQL_PASSWORD
@@ -125,9 +152,9 @@ spec:
           value: '{{ d_discourse_pg_name }}'
         # Redis details
         - name: REDIS_HOST
-          value: '{{ d_redis_host }}'
+          value: 'redis'
         - name: REDIS_PORT_NUMBER
-          value: '{{ d_redis_port_number }}'
+          value: '6379'
         - name: REDIS_PASSWORD
           value: '{{ d_redis_password }}'
 {% if d_smtp_host not in ['SetMe'] %}
@@ -140,6 +167,10 @@ spec:
           value: '{{ d_smtp_user }}'
         - name: SMTP_PASSWORD
           value: '{{ d_smtp_password }}'
+        - name: SMTP_TLS
+          value: 'yes'
+        - name: SMTP_AUTH
+          value: 'login'
 {% endif %}
         # Debug
         - name: NAMI_LOG_LEVEL
@@ -151,10 +182,13 @@ spec:
             cpu: 100m
             memory: 500Mi
         volumeMounts:
-        - mountPath: /bitnami/postgresql
-          name: discourse
+        - mountPath: /bitnami
+          name: discourse-sidekiq
 
       volumes:
       - name: discourse
         persistentVolumeClaim:
           claimName: discourse
+      - name: discourse-sidekiq
+        persistentVolumeClaim:
+          claimName: discourse-sidekiq
