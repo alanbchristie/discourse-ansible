@@ -23,6 +23,8 @@ d_discourse_pg_name: bitnami_application
 d_redis_password: SetMe
 
 # SMTP details
+# If you set the host the port must be valid.
+# If you set the user the password must be set.
 d_smtp_host: SetMe
 d_smtp_port: 587
 d_smtp_user: SetMe

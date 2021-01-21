@@ -92,14 +92,19 @@ spec:
           value: '{{ d_smtp_host }}'
         - name: SMTP_PORT
           value: '{{ d_smtp_port }}'
+{% if d_smtp_user not in ['SetMe'] %}
         - name: SMTP_USER
           value: '{{ d_smtp_user }}'
-        - name: SMTP_PASSWORD
-          value: '{{ d_smtp_password }}'
-        - name: SMTP_TLS
-          value: 'yes'
         - name: SMTP_AUTH
           value: 'login'
+{% if d_smtp_password not in ['SetMe'] %}
+        - name: SMTP_PASSWORD
+          value: '{{ d_smtp_password }}'
+{% endif %}
+{% else %}
+        - name: SMTP_AUTH
+          value: 'no'
+{% endif %}
 {% endif %}
         # Debug
         - name: NAMI_LOG_LEVEL
@@ -157,14 +162,19 @@ spec:
           value: '{{ d_smtp_host }}'
         - name: SMTP_PORT
           value: '{{ d_smtp_port }}'
+{% if d_smtp_user not in ['SetMe'] %}
         - name: SMTP_USER
           value: '{{ d_smtp_user }}'
-        - name: SMTP_PASSWORD
-          value: '{{ d_smtp_password }}'
-        - name: SMTP_TLS
-          value: 'yes'
         - name: SMTP_AUTH
           value: 'login'
+{% if d_smtp_password not in ['SetMe'] %}
+        - name: SMTP_PASSWORD
+          value: '{{ d_smtp_password }}'
+{% endif %}
+{% else %}
+        - name: SMTP_AUTH
+          value: 'no'
+{% endif %}
 {% endif %}
         # Debug
         - name: NAMI_LOG_LEVEL

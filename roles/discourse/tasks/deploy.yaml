@@ -13,9 +13,8 @@
 - name: Check smtp configuration
   assert:
     that:
-    - d_smtp_user|string != 'SetMe'
     - d_smtp_password|string != 'SetMe'
-  when: d_smtp_host|string != 'SetMe'
+  when: d_smtp_user|string != 'SetMe'
 
 # Create the namespace and other basic materials
 
