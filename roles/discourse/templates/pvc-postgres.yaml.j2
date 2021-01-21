@@ -7,7 +7,7 @@ metadata:
 spec:
   accessModes:
   - ReadWriteOnce
-  storageClassName: '{{ d_potgres_vol_storageclass }}'
+  storageClassName: '{{ d_postgres_vol_storageclass }}'
   resources:
     requests:
-      storage: '{{ d_potgres_vol_size_g }}Gi'
+      storage: '{{ d_postgres_vol_size_g }}Gi'
