@@ -45,13 +45,7 @@ spec:
         - containerPort: 5432
           name: pg
         env:
-        - name: POSTGRESQL_DATABASE
-          value: '{{ d_discourse_pg_name }}'
-        - name: POSTGRESQL_USERNAME
-          value: '{{ d_discourse_pg_username }}'
         - name: POSTGRESQL_PASSWORD
-          value: '{{ d_discourse_pg_password }}'
-        - name: POSTGRESQL_POSTGRES_PASSWORD
           value: '{{ d_pg_root_password }}'
         resources:
           limits:
