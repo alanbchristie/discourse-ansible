@@ -9,9 +9,13 @@
     - d_email|string != 'SetMe'
     - d_pg_root_password|string != 'SetMe'
     - d_redis_password|string != 'SetMe'
-    - d_smtp_host|string != 'SetMe'
+
+- name: Check smtp configuration
+  assert:
+    that:
     - d_smtp_user|string != 'SetMe'
     - d_smtp_password|string != 'SetMe'
+  when: d_smtp_host|string != 'SetMe'
 
 # Create the namespace and other basic materials
 
