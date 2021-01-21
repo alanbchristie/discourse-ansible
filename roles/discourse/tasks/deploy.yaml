@@ -1,5 +1,18 @@
 ---
 
+- name: Check key configuration
+  assert:
+    that:
+    - d_namespace|string != 'SetMe'
+    - d_hostname|string != 'SetMe'
+    - d_password|string != 'SetMe'
+    - d_email|string != 'SetMe'
+    - d_pg_root_password|string != 'SetMe'
+    - d_redis_password|string != 'SetMe'
+    - d_smtp_host|string != 'SetMe'
+    - d_smtp_user|string != 'SetMe'
+    - d_smtp_password|string != 'SetMe'
+
 # Create the namespace and other basic materials
 
 - name: Create namespace ({{ d_namespace }})
