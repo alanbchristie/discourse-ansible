@@ -11,5 +11,3 @@ ignore: |
   .github/
   roles/discourse/templates/serviceaccount.yaml.j2
   roles/discourse/templates/statefulset-discourse.yaml.j2
-  roles/discourse/templates/statefulset-postgres.yaml.j2
-  roles/discourse/templates/statefulset-redis.yaml.j2
