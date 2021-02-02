@@ -1,11 +1,36 @@
 ---
 
+- name: Check key configuration
+  assert:
+    that:
+    - d_namespace|string != 'SetMe'
+    - d_hostname|string != 'SetMe'
+    - d_password|string != 'SetMe'
+    - d_email|string != 'SetMe'
+    - d_pg_root_password|string != 'SetMe'
+    - d_redis_password|string != 'SetMe'
+
+- name: Check smtp configuration
+  assert:
+    that:
+    - d_smtp_password|string != 'SetMe'
+  when: d_smtp_user|string != 'SetMe'
+
 # Create the namespace and other basic materials
 
 - name: Create namespace ({{ d_namespace }})
   k8s:
     definition: "{{ lookup('template', 'namespace.yaml.j2') }}"
     wait: yes
+
+- name: Create DockerHub image pull secret
+  k8s:
+    definition: "{{ lookup('template', 'secret-dh-imagepull.yaml.j2') }}"
+    wait: yes
+  vars:
+    pull_namespace: "{{ d_namespace }}"
+    pull_secret: "{{ d_dockerhub_pullsecret }}"
+  when: d_dockerhub_pullsecret|string|length > 0
 
 - name: Create namespace material
   k8s:
@@ -36,29 +61,15 @@
     fail_msg: The {{ d_vol_storageclass }} StorageClass must be available on the cluster
   when: d_vol_storageclass != " "
 
-- name: Create volume claim ({{ d_vol_storageclass }})
+- name: Create volume claims
   k8s:
-    definition: "{{ lookup('template', 'pvc.yaml.j2') }}"
+    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
     wait: yes
     wait_timeout: "{{ wait_timeout }}"
-
-# Best practice ... wait for the PVC to bind.
-# e.g. wait until resources[0].status.phase == Bound (initially Pending)
-
-- name: Wait for volume claim to bind
-  k8s_info:
-    kind: PersistentVolumeClaim
-    name: discourse
-    namespace: "{{ d_namespace }}"
-  register: d_pvc_result
-  until: >-
-    d_pvc_result.resources|length > 0
-    and d_pvc_result.resources[0].status is defined
-    and d_pvc_result.resources[0].status.phase is defined
-    and d_pvc_result.resources[0].status.phase == 'Bound'
-  delay: 5
-  retries: "{{ (bind_timeout|int / 5)|int }}"
-  when: wait_for_bind|bool
+  loop:
+  - pvc-postgres
+  - pvc-redis
+  - pvc-discourse
 
 # Deploy the application
 
@@ -68,6 +79,10 @@
     wait: yes
     wait_timeout: "{{ pod_ready_timeout }}"
   loop:
-  - statefulset
-  - service
+  - statefulset-postgres
+  - service-postgres
+  - statefulset-redis
+  - service-redis
+  - statefulset-discourse
+  - service-discourse
   - ingress

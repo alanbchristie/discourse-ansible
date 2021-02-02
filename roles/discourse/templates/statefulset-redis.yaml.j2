@@ -1,0 +1,63 @@
+---
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: redis
+  namespace: {{ d_namespace }}
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      name: redis
+  serviceName: redis
+  template:
+    metadata:
+      name: redis
+      labels:
+        name: redis
+    spec:
+      serviceAccountName: discourse
+
+      # A 'preferred' (not guaranteed)
+      # node selection affinity...
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: purpose
+                operator: In
+                values:
+                - {{ d_node_purpose }}
+
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 0
+        fsGroup: 0
+
+      containers:
+      - name: redis
+        image: {{ d_redis_image_name }}:{{ d_redis_image_tag }}
+        imagePullPolicy: IfNotPresent
+        terminationMessagePolicy: FallbackToLogsOnError
+        ports:
+        - containerPort: 6379
+          name: redis
+        env:
+        - name: REDIS_PASSWORD
+          value: '{{ d_redis_password }}'
+        resources:
+          limits:
+            cpu: 1000m
+          requests:
+            cpu: 250m
+            memory: 500Mi
+        volumeMounts:
+        - mountPath: /bitnami
+          name: redis
+
+      volumes:
+      - name: redis
+        persistentVolumeClaim:
+          claimName: redis

@@ -1,0 +1,69 @@
+---
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: postgres
+  namespace: {{ d_namespace }}
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      name: postgres
+  serviceName: postgres
+  template:
+    metadata:
+      name: postgres
+      labels:
+        name: postgres
+    spec:
+      serviceAccountName: discourse
+
+      # A 'preferred' (not guaranteed)
+      # node selection affinity...
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: purpose
+                operator: In
+                values:
+                - {{ d_node_purpose }}
+
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 0
+        fsGroup: 0
+
+      containers:
+      - name: postgres
+        image: {{ d_postgres_image_name }}:{{ d_postgres_image_tag }}
+        imagePullPolicy: IfNotPresent
+        terminationMessagePolicy: FallbackToLogsOnError
+        ports:
+        - containerPort: 5432
+          name: pg
+        env:
+        - name: POSTGRESQL_DATABASE
+          value: '{{ d_discourse_pg_name }}'
+        - name: POSTGRESQL_USERNAME
+          value: '{{ d_discourse_pg_username }}'
+        - name: POSTGRESQL_PASSWORD
+          value: '{{ d_discourse_pg_password }}'
+        - name: POSTGRESQL_POSTGRES_PASSWORD
+          value: '{{ d_pg_root_password }}'
+        resources:
+          limits:
+            cpu: 1000m
+          requests:
+            cpu: 250m
+            memory: 500Mi
+        volumeMounts:
+        - mountPath: /bitnami/postgresql
+          name: postgres
+
+      volumes:
+      - name: postgres
+        persistentVolumeClaim:
+          claimName: postgres

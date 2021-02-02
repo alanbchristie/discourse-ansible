@@ -1,0 +1,13 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: postgres
+  namespace: {{ d_namespace }}
+spec:
+  selector:
+    name: postgres
+  ports:
+  - name: pg
+    port: 5432
+    targetPort: pg

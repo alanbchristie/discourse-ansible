@@ -3,28 +3,36 @@
 # Set to 'absent' to undeploy
 d_state: present
 
+# Deployment namespace
+d_namespace: SetMe
+
 # Discourse variables
-d_hostname: discourse.example.com
+d_hostname: SetMe
 d_sitename: Discourse
 d_username: user
 d_password: SetMe
+d_email: SetMe
 
 # PostgreSQL details
-d_pg_host: postgres.postgres.svc
-d_pg_root_user: postgres
 d_pg_root_password: SetMe
-d_pg_port_number: 5432
 d_discourse_pg_username: bn_discourse
 d_discourse_pg_password: bitnami1
 d_discourse_pg_name: bitnami_application
 
 # Redis details
-d_redis_host: redis-headless.redis.svc
-d_redis_port_number: 6379
 d_redis_password: SetMe
 
 # SMTP details
+# If you set the host the port must be valid.
+# If you set the user the password must be set.
 d_smtp_host: SetMe
 d_smtp_port: 587
 d_smtp_user: SetMe
 d_smtp_password: SetMe
+
+# A pull-secret for public images pulled from DockerHub.
+# If set this is the base-64 string that can be used as the value
+# in our Kubernetes Secret as the .dockerconfigjson value.
+# If set it is applied to the ServiceAccount in the namespace
+# and applied to Pods that use that namespace.
+d_dockerhub_pullsecret: ''
