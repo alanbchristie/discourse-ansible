@@ -42,20 +42,30 @@ spec:
         ports:
         - containerPort: 3000
           name: http
-#        readinessProbe:
-#          httpGet:
-#            path: /
-#            port: http
-#          initialDelaySeconds: 30
-#          timeoutSeconds: 5
-#          failureThreshold: 6
-#        livenessProbe:
-#          httpGet:
-#            path: /
-#            port: http
-#          initialDelaySeconds: 600
-#          timeoutSeconds: 5
-#          failureThreshold: 60
+{% if d_enable_probes %}
+        # Readiness doesn't restart the container when it fails.
+        # but liveness can. Initial deployments (i.e. those that
+        # require the "Precompiling assets" stage) can take a significant
+        # time to become ready. Here we wait for at least 10 minutes
+        # (600 seconds) and then give the container another 2 minutes
+        # to become ready.
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 600
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 12
+{% endif %}
         env:
         # Discourse details
         - name: DISCOURSE_USERNAME
@@ -147,24 +157,30 @@ spec:
         - start
         - --foreground
         - discourse-sidekiq
-#        readinessProbe:
-#          exec:
-#            command:
-#            - /bin/sh
-#            - -c
-#            - nami status discourse-sidekiq
-#          initialDelaySeconds: 30
-#          timeoutSeconds: 5
-#          failureThreshold: 6
-#        livenessProbe:
-#          exec:
-#            command:
-#            - /bin/sh
-#            - -c
-#            - nami status discourse-sidekiq
-#          initialDelaySeconds: 500
-#          timeoutSeconds: 5
-#          failureThreshold: 6
+{% if d_enable_probes %}
+        # The sidekiq container needs to wait for discourse
+        # so the timings here are the same as the main discourse container.
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - nami status discourse-sidekiq
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - nami status discourse-sidekiq
+          initialDelaySeconds: 600
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 12
+{% endif %}
         env:
         # Discourse details
         - name: DISCOURSE_HOST
