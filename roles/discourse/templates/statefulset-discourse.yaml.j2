@@ -47,7 +47,7 @@ spec:
         # but liveness can. Initial deployments (i.e. those that
         # require the "Precompiling assets" stage) can take a significant
         # time to become ready. Here we wait for at least 10 minutes
-        # (600 seconds) and then give the container another 2 minutes
+        # (600 seconds) and then give the container another 5 minutes
         # to become ready.
         readinessProbe:
           httpGet:
@@ -64,7 +64,7 @@ spec:
           initialDelaySeconds: 600
           periodSeconds: 10
           timeoutSeconds: 5
-          failureThreshold: 12
+          failureThreshold: 30
 {% endif %}
         env:
         # Discourse details
@@ -179,7 +179,7 @@ spec:
           initialDelaySeconds: 600
           periodSeconds: 10
           timeoutSeconds: 5
-          failureThreshold: 12
+          failureThreshold: 30
 {% endif %}
         env:
         # Discourse details
