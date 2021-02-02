@@ -70,7 +70,6 @@
   - pvc-postgres
   - pvc-redis
   - pvc-discourse
-  - pvc-discourse-sidekiq
 
 # Deploy the application
 

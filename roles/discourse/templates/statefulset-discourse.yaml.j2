@@ -42,6 +42,20 @@ spec:
         ports:
         - containerPort: 3000
           name: http
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 6
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 500
+          timeoutSeconds: 5
+          failureThreshold: 6
         env:
         # Discourse details
         - name: DISCOURSE_USERNAME
@@ -111,13 +125,14 @@ spec:
           value: '{{ d_image_log_level }}'
         resources:
           limits:
-            cpu: 1000m
+            cpu: 500m
           requests:
             cpu: 250m
             memory: 500Mi
         volumeMounts:
-        - mountPath: /bitnami
-          name: discourse
+        - mountPath: /bitnami/discourse
+          subPath: discourse
+          name: discourse-data
 
       # Discourse Sidekiq Container
       #
@@ -125,11 +140,31 @@ spec:
         image: {{ d_image_name }}:{{ d_image_tag }}
         imagePullPolicy: IfNotPresent
         terminationMessagePolicy: FallbackToLogsOnError
+        command:
+        - /app-entrypoint.sh
         args:
         - nami
         - start
         - --foreground
         - discourse-sidekiq
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - nami status discourse-sidekiq
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 6
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - nami status discourse-sidekiq
+          initialDelaySeconds: 500
+          timeoutSeconds: 5
+          failureThreshold: 6
         env:
         # Discourse details
         - name: DISCOURSE_HOST
@@ -186,13 +221,11 @@ spec:
             cpu: 100m
             memory: 500Mi
         volumeMounts:
-        - mountPath: /bitnami
-          name: discourse-sidekiq
+        - mountPath: /bitnami/discourse
+          subPath: discourse
+          name: discourse-data
 
       volumes:
-      - name: discourse
+      - name: discourse-data
         persistentVolumeClaim:
           claimName: discourse
-      - name: discourse-sidekiq
-        persistentVolumeClaim:
-          claimName: discourse-sidekiq
