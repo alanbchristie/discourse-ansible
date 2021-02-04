@@ -9,7 +9,7 @@ d_namespace: SetMe
 # Discourse variables
 d_hostname: SetMe
 d_sitename: Discourse
-d_username: user
+d_username: admin
 d_password: SetMe
 d_email: SetMe
 
