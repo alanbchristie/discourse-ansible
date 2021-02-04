@@ -2,6 +2,9 @@
 
 d_sa_psp: im-core-unrestricted
 
+# HTTP payload size (used for the ingress)
+d_ingress_nginx_proxy_body_size: 100m
+
 d_image_name: informaticsmatters/discourse
 d_image_tag: 1.0.0
 d_vol_storageclass: ' '
