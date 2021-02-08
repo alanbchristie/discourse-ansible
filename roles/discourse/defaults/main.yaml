@@ -8,7 +8,6 @@ d_namespace: SetMe
 
 # Discourse variables
 d_hostname: SetMe
-d_hostname_path: ''
 d_sitename: Discourse
 d_username: admin
 d_password: SetMe
