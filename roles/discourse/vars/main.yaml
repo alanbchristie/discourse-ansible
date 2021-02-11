@@ -36,6 +36,18 @@ d_pod_ready_timeout: 600
 
 d_cert_issuer: production
 
+# Requests and limits
+# If the limit is '0' it is not set.
+# You must have request though.
+d_cpu_limit: 4
+d_cpu_request: 250m
+d_mem_limit: 0
+d_mem_request: 500Mi
+d_sidekiq_cpu_limit: 4
+d_sidekiq_cpu_request: 250m
+d_sidekiq_mem_limit: 0
+d_sidekiq_mem_request: 500Mi
+
 # General variables
 
 wait_timeout: 120

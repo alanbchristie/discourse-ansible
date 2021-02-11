@@ -134,11 +134,18 @@ spec:
         - name: NAMI_LOG_LEVEL
           value: '{{ d_image_log_level }}'
         resources:
+{% if d_cpu_limit or d_mem_limit %}
           limits:
-            cpu: 500m
+{% if d_cpu_limit %}
+            cpu: {{ d_cpu_limit }}
+{% endif %}
+{% if d_mem_limit %}
+            memory: {{ d_mem_limit }}
+{% endif %}
+{% endif %}
           requests:
-            cpu: 250m
-            memory: 500Mi
+            cpu: {{ d_cpu_request }}
+            memory: {{ d_mem_request }}
         volumeMounts:
         - mountPath: /bitnami/discourse
           subPath: discourse
@@ -207,11 +214,18 @@ spec:
         - name: NAMI_LOG_LEVEL
           value: '{{ d_image_log_level }}'
         resources:
+{% if d_sidekiq_cpu_limit or d_sidekiq_mem_limit %}
           limits:
-            cpu: 500m
+{% if d_sidekiq_cpu_limit %}
+            cpu: {{ d_sidekiq_cpu_limit }}
+{% endif %}
+{% if d_sidekiq_mem_limit %}
+            memory: {{ d_sidekiq_mem_limit }}
+{% endif %}
+{% endif %}
           requests:
-            cpu: 100m
-            memory: 500Mi
+            cpu: {{ d_sidekiq_cpu_request }}
+            memory: {{ d_sidekiq_mem_request }}
         volumeMounts:
         - mountPath: /bitnami/discourse
           subPath: discourse
