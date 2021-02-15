@@ -31,7 +31,6 @@ d_image_log_level: debug
 # (controls whether the container's DISCOURSE_SKIP_INSTALL is 'yes' or 'no')
 d_skip_install: no
 
-d_node_purpose: application
 d_pod_ready_timeout: 600
 
 d_cert_issuer: production
