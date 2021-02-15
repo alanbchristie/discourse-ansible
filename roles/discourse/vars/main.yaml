@@ -46,6 +46,16 @@ d_sidekiq_cpu_limit: 4
 d_sidekiq_cpu_request: 250m
 d_sidekiq_mem_limit: 0
 d_sidekiq_mem_request: 500Mi
+# For the embedded Postgres
+d_pg_cpu_limit: 1
+d_pg_cpu_request: 250m
+d_pg_mem_limit: 0
+d_pg_mem_request: 500Mi
+# For the embedded Redis
+d_redis_cpu_limit: 1
+d_redis_cpu_request: 250m
+d_redis_mem_limit: 0
+d_redis_mem_request: 500Mi
 
 # General variables
 

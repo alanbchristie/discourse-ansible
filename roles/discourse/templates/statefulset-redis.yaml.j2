@@ -46,11 +46,18 @@ spec:
         - name: REDIS_PASSWORD
           value: '{{ d_redis_password }}'
         resources:
+{% if d_redis_cpu_limit or d_redis_mem_limit %}
           limits:
-            cpu: 1000m
+{% if d_redis_cpu_limit %}
+            cpu: {{ d_redis_cpu_limit }}
+{% endif %}
+{% if d_redis_mem_limit %}
+            memory: {{ d_redis_mem_limit }}
+{% endif %}
+{% endif %}
           requests:
-            cpu: 250m
-            memory: 500Mi
+            cpu: {{ d_redis_cpu_request }}
+            memory: {{ d_redis_mem_request }}
         volumeMounts:
         - mountPath: /bitnami
           name: redis

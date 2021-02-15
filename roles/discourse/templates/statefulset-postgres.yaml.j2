@@ -52,11 +52,18 @@ spec:
         - name: POSTGRESQL_POSTGRES_PASSWORD
           value: '{{ d_pg_root_password }}'
         resources:
+{% if d_pg_cpu_limit or d_pg_mem_limit %}
           limits:
-            cpu: 1000m
+{% if d_pg_cpu_limit %}
+            cpu: {{ d_pg_cpu_limit }}
+{% endif %}
+{% if d_pg_mem_limit %}
+            memory: {{ d_pg_mem_limit }}
+{% endif %}
+{% endif %}
           requests:
-            cpu: 250m
-            memory: 500Mi
+            cpu: {{ d_pg_cpu_request }}
+            memory: {{ d_pg_mem_request }}
         volumeMounts:
         - mountPath: /bitnami/postgresql
           name: postgres
