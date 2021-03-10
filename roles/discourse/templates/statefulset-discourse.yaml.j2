@@ -34,7 +34,7 @@ spec:
       # Discourse Container
       #
       - name: discourse
-        image: {{ d_image_name }}:{{ d_image_tag }}
+        image: {{ d_image_registry }}/{{ d_image_name }}:{{ d_image_tag }}
         imagePullPolicy: IfNotPresent
         terminationMessagePolicy: FallbackToLogsOnError
         ports:
@@ -152,7 +152,7 @@ spec:
       # Discourse Sidekiq Container
       #
       - name: discourse-sidekiq
-        image: {{ d_image_name }}:{{ d_image_tag }}
+        image: {{ d_image_registry }}/{{ d_image_name }}:{{ d_image_tag }}
         imagePullPolicy: IfNotPresent
         terminationMessagePolicy: FallbackToLogsOnError
         command:

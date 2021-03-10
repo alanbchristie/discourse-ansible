@@ -5,24 +5,21 @@ d_sa_psp: im-core-unrestricted
 # HTTP payload size (used for the ingress)
 d_ingress_nginx_proxy_body_size: 100m
 
-d_image_name: informaticsmatters/discourse
-d_image_tag: 1.0.0
-d_vol_storageclass: ' '
-d_vol_size_g: 80
-
 # Enable liveness and readiness probes
 # in the discourse and sidekiq containers?
 d_enable_probes: yes
 
+d_image_registry: docker.io
+d_image_name: informaticsmatters/discourse
+d_image_tag: 1.0.0
+
+d_redis_image_registry: docker.io
 d_redis_image_name: bitnami/redis
 d_redis_image_tag: 6.0-debian-10
-d_redis_vol_storageclass: ' '
-d_redis_vol_size_g: 8
 
+d_postgres_image_registry: docker.io
 d_postgres_image_name: bitnami/postgresql
 d_postgres_image_tag: 11-debian-10
-d_postgres_vol_storageclass: ' '
-d_postgres_vol_size_g: 50
 
 # Bitnami container log level.
 # i.e. 'info', 'debug', 'trace'

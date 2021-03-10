@@ -30,7 +30,18 @@ d_smtp_port: 587
 d_smtp_user: SetMe
 d_smtp_password: SetMe
 
-# A pull-secret for public images pulled from DockerHub.
+# Persistent volumes
+# Discourse
+d_vol_storageclass: SetMe
+d_vol_size_g: 80
+# Redis
+d_redis_vol_storageclass: SetMe
+d_redis_vol_size_g: 8
+# Postgres
+d_postgres_vol_storageclass: SetMe
+d_postgres_vol_size_g: 50
+
+# A pull-secret for images.
 # If set this is the base-64 string that can be used as the value
 # in our Kubernetes Secret as the .dockerconfigjson value.
 # If set it is applied to the ServiceAccount in the namespace

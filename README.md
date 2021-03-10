@@ -26,21 +26,18 @@ in the role's `defaults/main.yaml` and less common variables in
 ## Prerequisites
 You will need: -
 
-1.  A **PostgreSQL** database (better than v10) with a user
-    and database that can be used by Discourse.
-2.  A **Redis** database
+-   A kubernetes cluster with persistent storage
+-   An ingres controller (like ngnix), a load-balancer and a
+    hostname that resolves to your cluster
+-   At least one available core, ideally 2 or 3
+-   A certificate manager
+-   A named PodSecurityPolicy with admin capabilities
 
->   You'll set the database details using variables you'll find in
-    the `defaults` directory.
-
-You could create a default Discourse database in PostgreSQL...
-
-    # psql --username postgres --dbname postgres
-    
-    CREATE USER bn_discourse;
-    ALTER USER bn_discourse WITH PASSWORD 'bitnami1';
-    CREATE DATABASE bitnami_application;
-    GRANT ALL PRIVILEGES ON DATABASE bitnami_application TO bn_discourse;
+## Configuration
+You will need to provide some essential information prior to deployment.
+Review the variables in `roles/discourse/defaults/main.yaml` and consider
+providing values for all those that have `setMe`. Not all of them are needed,
+but you should review all variables prior to running the playbook.
 
 ---
 
