@@ -47,3 +47,13 @@ d_postgres_vol_size_g: 50
 # If set it is applied to the ServiceAccount in the namespace
 # and applied to Pods that use that namespace.
 d_dockerhub_pullsecret: ''
+
+# If the 'crone' (cron-rclone) provider is set
+# the Discourse Pod will also container cron-driven rclone
+# to synchronise the backups to a remote S3 service.
+d_crone_target_provider: ''
+d_crone_target_access_key_id: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+d_crone_target_secret_access_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+d_crone_target_endpoint: ''
+d_crone_data_path: discourse/public/backups/default
+d_crone_remote_path: discourse-backups/development

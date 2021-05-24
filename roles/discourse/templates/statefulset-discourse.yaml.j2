@@ -229,6 +229,49 @@ spec:
           subPath: discourse
           name: discourse-data
 
+{% if d_crone_target_provider %}
+      # Discourse 'crone' (cron-rclone) Container
+      #
+      - name: discourse-crone
+        image: {{ d_crone_image_registry }}/{{ d_crone_image_name }}:{{ d_crone_image_tag }}
+{% if d_crone_image_tag in ['latest', 'stable'] %}
+        imagePullPolicy: Always
+{% else %}
+        imagePullPolicy: IfNotPresent
+{% endif %}
+        terminationMessagePolicy: FallbackToLogsOnError
+        env:
+        - name: RCLONE_CONFIG_TARGET_PROVIDER
+          value: {{ d_crone_target_provider }}
+        - name: RCLONE_CONFIG_TARGET_ACCESS_KEY_ID
+          value: {{ d_crone_target_access_key_id }}
+        - name: RCLONE_CONFIG_TARGET_SECRET_ACCESS_KEY
+          value: {{ d_crone_target_secret_access_key }}
+        - name: RCLONE_CONFIG_TARGET_ENDPOINT
+          value: {{ d_crone_target_endpoint }}
+        - name: DATA_PATH
+          value: {{ d_crone_data_path }}
+        - name: REMOTE_PATH
+          value: {{ d_crone_remote_path }}
+        resources:
+{% if d_crone_cpu_limit or d_crone_mem_limit %}
+          limits:
+{% if d_crone_cpu_limit %}
+            cpu: {{ d_crone_cpu_limit }}
+{% endif %}
+{% if d_crone_mem_limit %}
+            memory: {{ d_crone_mem_limit }}
+{% endif %}
+{% endif %}
+          requests:
+            cpu: {{ d_crone_cpu_request }}
+            memory: {{ d_crone_mem_request }}
+        volumeMounts:
+        - mountPath: /data/discourse
+          subPath: discourse
+          name: discourse-data
+{% endif %}
+
       volumes:
       - name: discourse-data
         persistentVolumeClaim:
