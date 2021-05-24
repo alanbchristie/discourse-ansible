@@ -60,7 +60,7 @@ d_redis_mem_request: 500Mi
 
 # The (optional) crone image
 d_crone_image_registry: docker.io
-d_crone_image: informaticsmatters/crone
+d_crone_image_name: informaticsmatters/crone
 d_crone_image_tag: stable
 
 # General variables
