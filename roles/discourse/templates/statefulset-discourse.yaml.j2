@@ -24,10 +24,8 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: informaticsmatters.com/purpose
-                operator: In
-                values:
-                - core
+              - key: informaticsmatters.com/purpose-core
+                operator: Exists
 
       containers:
 
