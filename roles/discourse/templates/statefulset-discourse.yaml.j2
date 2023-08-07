@@ -24,8 +24,8 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: informaticsmatters.com/purpose-core
-                operator: Exists
+              - key: informaticsmatters.com/purpose-worker
+                operator: DoesNotExist
 
       containers:
 

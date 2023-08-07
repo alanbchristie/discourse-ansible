@@ -24,10 +24,8 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: informaticsmatters.com/purpose
-                operator: In
-                values:
-                - core
+              - key: informaticsmatters.com/purpose-worker
+                operator: DoesNotExist
 
       securityContext:
         runAsUser: 1001
