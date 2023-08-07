@@ -1,2 +1,3 @@
-ansible-lint
+ansible-lint == 2.7.1
+black
 yamllint

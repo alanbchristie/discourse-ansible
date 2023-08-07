@@ -1,6 +1,8 @@
 ---
 
-- hosts: localhost
+- name: Discourse
+  hosts: localhost
   tasks:
-  - include_role:
+  - name: Include discourse
+    ansible.builtin.include_role:
       name: discourse

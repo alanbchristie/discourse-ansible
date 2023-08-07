@@ -41,21 +41,21 @@
   - role
   - rolebinding-d-sa
 
-- name: Relax {{ d_namespace }} 'default' service account (for cert-manager)
+- name: Relax 'default' service account (for cert-manager)
   k8s:
     definition: "{{ lookup('template', 'rolebinding-default-sa.yaml.j2') }}"
     wait: yes
 
 # Volumes
 
-- name: Get {{ d_vol_storageclass }} StorageClass
+- name: Get StorageClass
   k8s_info:
     kind: StorageClass
     name: "{{ d_vol_storageclass }}"
   register: sc_result
   when: d_vol_storageclass != " "
 
-- name: Assert {{ d_vol_storageclass }} StorageClass
+- name: Assert StorageClass
   assert:
     that: sc_result.resources|length == 1
     fail_msg: The {{ d_vol_storageclass }} StorageClass must be available on the cluster

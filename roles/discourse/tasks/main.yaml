@@ -1,6 +1,7 @@
 ---
 
-- include_tasks: prep.yaml
+- name: Prep
+  include_tasks: prep.yaml
 
 # A kubernetes (or OpenShift) host and an API key must be set.
 # We will either have authenticated against an OpenShift server
@@ -16,14 +17,16 @@
 
 # Go...
 
-- block:
-
-  - include_tasks: deploy.yaml
-    when: d_state|string == 'present'
-  - include_tasks: undeploy.yaml
-    when: d_state|string == 'absent'
-
+- name: Deploy/Undeploy
   module_defaults:
     group/k8s:
       host: "{{ k8s_auth_host }}"
       api_key: "{{ k8s_auth_api_key }}"
+  block:
+
+  - name: Deploy
+    include_tasks: deploy.yaml
+    when: d_state|string == 'present'
+  - name: Undeploy
+    include_tasks: undeploy.yaml
+    when: d_state|string == 'absent'
