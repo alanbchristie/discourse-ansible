@@ -1,7 +1,7 @@
 ---
 
 kind: Ingress
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 metadata:
   name: discourse
   namespace: {{ d_namespace }}
@@ -11,6 +11,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "{{ d_ingress_nginx_proxy_body_size }}"
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     - {{ d_hostname }}
@@ -21,5 +22,8 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: discourse
-          servicePort: http
+          service:
+            name: discourse
+          service:
+            port:
+              name: http
