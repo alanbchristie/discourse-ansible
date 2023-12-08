@@ -20,6 +20,9 @@ ignore: |
   .github/
   .venv/
   roles/discourse/templates/serviceaccount.yaml.j2
+  roles/discourse/templates/pvc-discourse.yaml.j2
+  roles/discourse/templates/pvc-postgres.yaml.j2
+  roles/discourse/templates/pvc-redis.yaml.j2
   roles/discourse/templates/statefulset-discourse.yaml.j2
   roles/discourse/templates/statefulset-postgres.yaml.j2
   roles/discourse/templates/statefulset-redis.yaml.j2
