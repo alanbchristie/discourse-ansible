@@ -32,13 +32,13 @@ d_smtp_password: SetMe
 
 # Persistent volumes
 # Discourse
-d_vol_storageclass: SetMe
+d_vol_storageclass: ' '
 d_vol_size_g: 80
 # Redis
-d_redis_vol_storageclass: SetMe
+d_redis_vol_storageclass: ' '
 d_redis_vol_size_g: 8
 # Postgres
-d_postgres_vol_storageclass: SetMe
+d_postgres_vol_storageclass: ' '
 d_postgres_vol_size_g: 50
 
 # A pull-secret for images.

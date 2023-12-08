@@ -10,8 +10,8 @@ d_ingress_nginx_proxy_body_size: 100m
 d_enable_probes: yes
 
 d_image_registry: docker.io
-d_image_name: informaticsmatters/discourse
-d_image_tag: 1.0.0
+d_image_name: bitnami/discourse
+d_image_tag: 3.1.1-debian-11-r0
 
 d_redis_image_registry: docker.io
 d_redis_image_name: bitnami/redis
