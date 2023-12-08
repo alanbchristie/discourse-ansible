@@ -4,7 +4,7 @@
 d_state: present
 
 # Deployment namespace
-d_namespace: SetMe
+d_namespace: discourse
 
 # Discourse variables
 d_hostname: SetMe

@@ -24,8 +24,8 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: informaticsmatters.com/purpose-worker
-                operator: DoesNotExist
+              - key: informaticsmatters.com/purpose-core
+                operator: Exists
 
       containers:
 
@@ -70,55 +70,55 @@ spec:
           value: '{{ d_password }}'
         - name: DISCOURSE_EMAIL
           value: '{{ d_email }}'
-        - name: DISCOURSE_SITENAME
+        - name: DISCOURSE_SITE_NAME
           value: '{{ d_sitename }}'
-        - name: DISCOURSE_HOSTNAME
+        - name: DISCOURSE_HOST
           value: '{{ d_hostname }}'
         - name: DISCOURSE_SKIP_INSTALL
-{% if d_skip_install %}
-          value: 'yes'
-{% else %}
           value: 'no'
-{% endif %}
+        - name: DISCOURSE_PRECOMPILE_ASSETS
+          value: 'yes'
         - name: DISCOURSE_PASSENGER_SPAWN_METHOD
           value: 'direct'
-        - name: DISCOURSE_PORT_NUMBER
-          value: '3000'
         # PostgreSQL details
         - name: POSTGRESQL_ROOT_USER
           value: 'postgres'
         - name: POSTGRESQL_ROOT_PASSWORD
           value: '{{ d_pg_root_password }}'
-        - name: POSTGRESQL_HOST
+        - name: DISCOURSE_DATABASE_HOST
           value: 'postgres'
-        - name: POSTGRESQL_PORT_NUMBER
+        - name: DISCOURSE_DATABASE_PORT_NUMBER
           value: '5432'
-        - name: DISCOURSE_POSTGRESQL_USERNAME
+        - name: POSTGRESQL_CLIENT_POSTGRES_USER
+          value: 'postgres'
+        - name: POSTGRESQL_CLIENT_POSTGRES_PASSWORD
+          value: '{{ d_pg_root_password }}'
+        - name: DISCOURSE_DATABASE_USER
           value: '{{ d_discourse_pg_username }}'
-        - name: DISCOURSE_POSTGRESQL_PASSWORD
+        - name: DISCOURSE_DATABASE_PASSWORD
           value: '{{ d_discourse_pg_password }}'
-        - name: DISCOURSE_POSTGRESQL_NAME
+        - name: DISCOURSE_DATABASE_NAME
           value: '{{ d_discourse_pg_name }}'
         # Redis details
-        - name: REDIS_HOST
+        - name: DISCOURSE_REDIS_HOST
           value: 'redis'
-        - name: REDIS_PORT_NUMBER
+        - name: DISCOURSE_REDIS_PORT_NUMBER
           value: '6379'
-        - name: REDIS_PASSWORD
+        - name: DISCOURSE_REDIS_PASSWORD
           value: '{{ d_redis_password }}'
 {% if d_smtp_host not in ['SetMe'] %}
         # SMTP details
-        - name: SMTP_HOST
+        - name: DISCOURSE_SMTP_HOST
           value: '{{ d_smtp_host }}'
-        - name: SMTP_PORT
+        - name: DISCOURSE_SMTP_PORT
           value: '{{ d_smtp_port }}'
 {% if d_smtp_user not in ['SetMe'] %}
-        - name: SMTP_USER
+        - name: DISCOURSE_SMTP_USER
           value: '{{ d_smtp_user }}'
-        - name: SMTP_AUTH
+        - name: DISCOURSE_SMTP_AUTH
           value: 'login'
 {% if d_smtp_password not in ['SetMe'] %}
-        - name: SMTP_PASSWORD
+        - name: DISCOURSE_SMTP_PASSWORD
           value: '{{ d_smtp_password }}'
 {% endif %}
 {% else %}
@@ -154,61 +154,44 @@ spec:
         imagePullPolicy: IfNotPresent
         terminationMessagePolicy: FallbackToLogsOnError
         command:
-        - /app-entrypoint.sh
-        args:
-        - nami
-        - start
-        - --foreground
-        - discourse-sidekiq
+        - bash
+        - -c
+        - |
+          /opt/bitnami/scripts/discourse-sidekiq/setup.sh
+          /opt/bitnami/scripts/discourse-sidekiq/run.sh
         env:
         # Discourse details
         - name: DISCOURSE_HOST
-          value: 'localhost'
-        - name: DISCOURSE_PORT
-          value: '3000'
-        - name: DISCOURSE_HOSTNAME
           value: '{{ d_hostname }}'
-        # PostgreSQL details
-        - name: POSTGRESQL_HOST
+        - name: DISCOURSE_DATABASE_HOST
           value: 'postgres'
-        - name: POSTGRESQL_PORT_NUMBER
+        - name: DISCOURSE_DATABASE_PORT_NUMBER
           value: '5432'
-        - name: DISCOURSE_POSTGRESQL_USERNAME
+        - name: DISCOURSE_DATABASE_USER
           value: '{{ d_discourse_pg_username }}'
-        - name: DISCOURSE_POSTGRESQL_PASSWORD
+        - name: DISCOURSE_DATABASE_PASSWORD
           value: '{{ d_discourse_pg_password }}'
-        - name: DISCOURSE_POSTGRESQL_NAME
+        - name: DISCOURSE_DATABASE_NAME
           value: '{{ d_discourse_pg_name }}'
         # Redis details
-        - name: REDIS_HOST
+        - name: DISCOURSE_REDIS_HOST
           value: 'redis'
-        - name: REDIS_PORT_NUMBER
+        - name: DISCOURSE_REDIS_PORT_NUMBER
           value: '6379'
-        - name: REDIS_PASSWORD
+        - name: DISCOURSE_REDIS_PASSWORD
           value: '{{ d_redis_password }}'
-{% if d_smtp_host not in ['SetMe'] %}
         # SMTP details
-        - name: SMTP_HOST
+        - name: DISCOURSE_SMTP_HOST
           value: '{{ d_smtp_host }}'
-        - name: SMTP_PORT
+        - name: DISCOURSE_SMTP_PORT
           value: '{{ d_smtp_port }}'
-{% if d_smtp_user not in ['SetMe'] %}
-        - name: SMTP_USER
+        - name: DISCOURSE_SMTP_USER
           value: '{{ d_smtp_user }}'
-        - name: SMTP_AUTH
+        - name: DISCOURSE_SMTP_AUTH
           value: 'login'
-{% if d_smtp_password not in ['SetMe'] %}
-        - name: SMTP_PASSWORD
+        - name: DISCOURSE_SMTP_PASSWORD
           value: '{{ d_smtp_password }}'
-{% endif %}
-{% else %}
-        - name: SMTP_AUTH
-          value: 'no'
-{% endif %}
-{% endif %}
         # Debug
-        - name: NAMI_LOG_LEVEL
-          value: '{{ d_image_log_level }}'
         resources:
 {% if d_sidekiq_cpu_limit or d_sidekiq_mem_limit %}
           limits:

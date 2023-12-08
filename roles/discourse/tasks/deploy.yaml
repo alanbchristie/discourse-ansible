@@ -1,7 +1,7 @@
 ---
 
 - name: Check key configuration
-  assert:
+  ansible.builtin.assert:
     that:
     - d_namespace|string != 'SetMe'
     - d_hostname|string != 'SetMe'
@@ -11,7 +11,7 @@
     - d_redis_password|string != 'SetMe'
 
 - name: Check smtp configuration
-  assert:
+  ansible.builtin.assert:
     that:
     - d_smtp_password|string != 'SetMe'
   when: d_smtp_user|string != 'SetMe'
@@ -19,12 +19,12 @@
 # Create the namespace and other basic materials
 
 - name: Create namespace ({{ d_namespace }})
-  k8s:
+  kubernetes.core.k8s:
     definition: "{{ lookup('template', 'namespace.yaml.j2') }}"
     wait: yes
 
 - name: Create DockerHub image pull secret
-  k8s:
+  kubernetes.core.k8s:
     definition: "{{ lookup('template', 'secret-dh-imagepull.yaml.j2') }}"
     wait: yes
   vars:
@@ -33,7 +33,7 @@
   when: d_dockerhub_pullsecret|string|length > 0
 
 - name: Create namespace material
-  k8s:
+  kubernetes.core.k8s:
     definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
     wait: yes
   loop:
@@ -42,27 +42,27 @@
   - rolebinding-d-sa
 
 - name: Relax 'default' service account (for cert-manager)
-  k8s:
+  kubernetes.core.k8s:
     definition: "{{ lookup('template', 'rolebinding-default-sa.yaml.j2') }}"
     wait: yes
 
 # Volumes
 
 - name: Get StorageClass
-  k8s_info:
+  kubernetes.core.k8s_info:
     kind: StorageClass
     name: "{{ d_vol_storageclass }}"
   register: sc_result
   when: d_vol_storageclass != " "
 
 - name: Assert StorageClass
-  assert:
+  ansible.builtin.assert:
     that: sc_result.resources|length == 1
     fail_msg: The {{ d_vol_storageclass }} StorageClass must be available on the cluster
   when: d_vol_storageclass != " "
 
 - name: Create volume claims
-  k8s:
+  kubernetes.core.k8s:
     definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
     wait: yes
     wait_timeout: "{{ wait_timeout }}"
@@ -74,10 +74,10 @@
 # Deploy the application
 
 - name: Deploy Discourse ({{ d_hostname }})
-  k8s:
+  kubernetes.core.k8s:
     definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
-    wait: yes
-    wait_timeout: "{{ pod_ready_timeout }}"
+#    wait: yes
+#    wait_timeout: "{{ pod_ready_timeout }}"
   loop:
   - statefulset-postgres
   - service-postgres

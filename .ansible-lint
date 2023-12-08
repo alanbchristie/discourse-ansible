@@ -1,13 +1,4 @@
 ---
 
 skip_list:
-- '204' # Lines should be no longer than 160 chars
-warn_list:
-- '106'  # Role name {} does not match ``^[a-z][a-z0-9_]+$`` pattern
-- '207' # Nested jinja pattern
-- yaml
-- fqcn-builtins
-- fqcn[action]  # Use FQCN for builtin actions.
-- var-spacing
-- experimental  # all rules tagged as experimental
-- key-order[task]  # Ensure specific order of keys in mappings.
+- var-naming[no-role-prefix]

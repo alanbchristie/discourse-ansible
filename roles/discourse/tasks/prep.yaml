@@ -4,7 +4,7 @@
 
 # Expose ansible version
 - name: Display ansible version
-  debug:
+  ansible.builtin.debug:
     var: ansible_version.full
 
 # Basic pre-playbook prerequisites.
@@ -14,22 +14,22 @@
 # We need the openshift/kubernetes module amongst other things...
 
 - name: Get built-in Python packages
-  command: pip freeze
+  ansible.builtin.command: pip freeze
   register: freeze_result
   changed_when: no
 
 - name: Collect built-in Python packages
-  set_fact:
-    builtin_python_packages: "{{ builtin_python_packages|default([]) + [item.split('==')[0]] }}"
+  ansible.builtin.set_fact:
+    builtin_python_packages: "{{ builtin_python_packages | default([]) + [item.split('==')[0]] }}"
   loop: "{{ freeze_result.stdout_lines }}"
 
 - name: Display built-in Python packages
-  debug:
+  ansible.builtin.debug:
     var: builtin_python_packages
     verbosity: 3
 
 - name: Install prerequisite Python modules
-  pip:
+  ansible.builtin.pip:
     name: "{{ item.name }}"
     version: "{{ item.version }}"
     extra_args: --user
@@ -50,6 +50,7 @@
 # from the 'login.yaml' play.
 
 - name: Set initial authentication facts
-  set_fact:
+  ansible.builtin.set_fact:
     k8s_auth_host: "{{ lookup('env', 'K8S_AUTH_HOST') }}"
     k8s_auth_api_key: "{{ lookup('env', 'K8S_AUTH_API_KEY') }}"
+    k8s_kubeconfig: "{{ lookup('env', 'K8S_AUTH_KUBECONFIG') }}"

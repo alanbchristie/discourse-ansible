@@ -15,11 +15,11 @@ d_image_tag: 1.0.0
 
 d_redis_image_registry: docker.io
 d_redis_image_name: bitnami/redis
-d_redis_image_tag: 6.0-debian-10
+d_redis_image_tag: '6.2.13'
 
 d_postgres_image_registry: docker.io
 d_postgres_image_name: bitnami/postgresql
-d_postgres_image_tag: 11-debian-10
+d_postgres_image_tag: '15.4.0'
 
 # Bitnami container log level.
 # i.e. 'info', 'debug', 'trace'

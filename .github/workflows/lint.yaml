@@ -24,20 +24,26 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
-    - name: Install dependencies
+        python-version: '3.11'
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: 1.7.1
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+        installer-parallel: true
+    - name: Install poetry dependencies
       run: |
-        pip install --upgrade pip
-        pip install -r build-requirements.txt
-        pip install -r requirements.txt
+        poetry install --no-interaction --no-root
     - name: Lint
       run: |
+        source .venv/bin/activate
+        ansible-lint
         yamllint .
         find . -type f -name '*.yaml.j2' -exec yamllint {} +
